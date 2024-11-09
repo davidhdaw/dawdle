@@ -258,8 +258,8 @@ function App() {
       <Key letter='L' status={letterStatusObject.L} keyboardCheck={keyboardCheck} />
       </div>
       <div className='keyboard-row'>
-      <div type="text" className="escape-key" onClick={e => keyboardCheck({key: 'Escape'})} >
-         ESC
+      <div type="text" className="return-key" onClick={e => guess()} >
+      Enter
       </div>
       <Key letter='Z' status={letterStatusObject.Z} keyboardCheck={keyboardCheck} />
       <Key letter='X' status={letterStatusObject.X} keyboardCheck={keyboardCheck} />
@@ -268,8 +268,8 @@ function App() {
       <Key letter='B' status={letterStatusObject.B} keyboardCheck={keyboardCheck} />
       <Key letter='N' status={letterStatusObject.N} keyboardCheck={keyboardCheck} />
       <Key letter='M' status={letterStatusObject.M} keyboardCheck={keyboardCheck} />
-      <div type="text" className="return-key" onClick={e => guess()} >
-         Enter
+      <div type="text" className="escape-key" onClick={e => keyboardCheck({key: 'Escape'})} >
+         ESC
       </div>
       </div>
 
