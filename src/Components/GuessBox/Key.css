@@ -1,0 +1,23 @@
+.virtual-key {
+    color: white;
+    text-align: center;
+    font-size: large;
+    min-height: 45px;
+    min-width: 35px;
+    background: none;
+    border: 1px solid rgb(214, 214, 214);
+    font-family: "GFS Neohellenic", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+}
+.correct {
+    background-color: green;
+}
+
+.wrong {
+    background-color: rgb(95, 95, 95);
+}
+
+.wrong-position {
+    background-color: darkgoldenrod;
+}
