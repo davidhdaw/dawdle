@@ -82,7 +82,9 @@ function App() {
       }
     }
 
-
+    if(localStorage.winner == 'true') {
+      setWinner(true)
+    }
     if(localStorage.statusArray) {
       var retrievedStatusArray = JSON.parse(localStorage.getItem('statusArray'))
       setStatusArray([...retrievedStatusArray])
@@ -104,6 +106,7 @@ function App() {
   }, [])
 
   const keyboardCheck = (e) => {
+    if(!winner) {
     const letters = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm' ];
     const caps = ['Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M'];
     let value = e.key
@@ -131,6 +134,7 @@ function App() {
     if(value == "Enter" && !winner) {
       guess()
     }
+  }
   }
 
   const guess = () => {
@@ -163,6 +167,7 @@ function App() {
 
         if(correctNum == 5) {
           setWinner(true)
+          localStorage.setItem('winner', JSON.stringify('true'))
         } else {
           setRowPosition(rowPosition + 1)
           localStorage.setItem('rowPosition', JSON.stringify(rowPosition + 1))
