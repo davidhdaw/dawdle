@@ -156,10 +156,14 @@ function App() {
           }})
         valueArray[rowPosition].forEach((letter, i) => {
           if(remainingLetters.includes(letter)) {
-            updatedStatusArray[rowPosition][i] = 'wrong-position'
-            updatedLetterStatusObject[letter] = 'wrong-position'
-          } 
-        })
+            if(updatedStatusArray[rowPosition][i] != "correct")
+            {
+              updatedStatusArray[rowPosition][i] = 'wrong-position'
+            }
+            if(updatedLetterStatusObject[letter] != "correct")
+            {
+              updatedLetterStatusObject[letter] = 'wrong-position'
+            }}})
         valueArray[rowPosition].forEach((letter, i) => {
           if(updatedStatusArray[rowPosition][i] == '' ) {
             updatedStatusArray[rowPosition][i] = 'wrong'
