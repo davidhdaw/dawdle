@@ -146,19 +146,30 @@ function App() {
         let updatedStatusArray = statusArray
         let updatedLetterStatusObject = letterStatusObject
         let correctNum = 0
+        let remainingLetters = correctWord
         valueArray[rowPosition].forEach((letter, i) => {
           if(letter == correctWord[i]) {
             updatedStatusArray[rowPosition][i] = 'correct'
             updatedLetterStatusObject[letter] = 'correct'
+            delete remainingLetters[i];
             correctNum++
-          } else if(correctWord.includes(letter)) {
+          }})
+        valueArray[rowPosition].forEach((letter, i) => {
+          if(remainingLetters.includes(letter)) {
             updatedStatusArray[rowPosition][i] = 'wrong-position'
             updatedLetterStatusObject[letter] = 'wrong-position'
-          } else {
-            updatedStatusArray[rowPosition][i] = 'wrong'
-            updatedLetterStatusObject[letter] = 'wrong'
-          }
+          } 
         })
+        valueArray[rowPosition].forEach((letter, i) => {
+          if(updatedStatusArray[rowPosition][i] == '' ) {
+            updatedStatusArray[rowPosition][i] = 'wrong'
+            if(updatedLetterStatusObject[letter] == '') {
+            updatedLetterStatusObject[letter] = 'wrong'
+            }
+          }
+        }
+        )
+
         setStatusArray([...updatedStatusArray])
         setLetterStatusObject({...updatedLetterStatusObject})
         localStorage.setItem('statusArray', JSON.stringify(statusArray));
