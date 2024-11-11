@@ -222,7 +222,7 @@ function App() {
   return (
     <div className='full-area' onKeyDown={keyboardCheck} tabIndex="-1" ref={focusRef}>
       <h1>Dawdle</h1>
-      <h3>(But also, hi Suggie)</h3>
+      <h3>(But also, hi Sugie)</h3>
     <div className='gameArea'>
       <div className='row'>
       <GuessBox value={valueArray[0][0]} status={statusArray[0][0]}  />
