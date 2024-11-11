@@ -95,7 +95,7 @@ function App() {
             {return correct++} else {return correct}
         }, 0,
       )
-      if(correctNum == 4){
+      if(correctNum == 5){
         setWinner(true)
         localStorage.setItem('winner', JSON.stringify('true'))
       } 
