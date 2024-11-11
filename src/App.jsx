@@ -83,10 +83,23 @@ function App() {
     }
 
     if(localStorage.winner == 'true') {
-      setWinner(true)
+      console.log('ugh')
     }
     if(localStorage.statusArray) {
+      setWinner(false)
+      localStorage.setItem('winner', JSON.stringify('false'))
       var retrievedStatusArray = JSON.parse(localStorage.getItem('statusArray'))
+      retrievedStatusArray.forEach((row) => {
+        const correctNum = row.reduce((correct, entry) => {
+          if(entry == 'correct') 
+            {return correct++} else {return correct}
+        }, 0,
+      )
+      if(correctNum == 4){
+        setWinner(true)
+        localStorage.setItem('winner', JSON.stringify('true'))
+      } 
+      })
       setStatusArray([...retrievedStatusArray])
     }
     if(localStorage.letterStatusObject) {
@@ -142,6 +155,7 @@ function App() {
 
   const guess = () => {
     setLetterError(false)
+    setWinner(false)
     setWordError(false)
     if(!valueArray[rowPosition].includes('')) {
       const guessWord = valueArray[rowPosition].join("").toLowerCase()
