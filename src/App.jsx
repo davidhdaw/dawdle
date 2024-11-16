@@ -176,6 +176,8 @@ function App() {
             if(updatedStatusArray[rowPosition][i] != "correct")
             {
               updatedStatusArray[rowPosition][i] = 'wrong-position'
+              let letterIndex = remainingLetters.indexOf(letter)
+              delete remainingLetters[letterIndex]
             }
             if(updatedLetterStatusObject[letter] != "correct")
             {
