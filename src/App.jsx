@@ -5,7 +5,7 @@ import './App.css'
 import {Words} from './words.json'
 function App() {
 
-  const correctWord = ['S', 'T', 'U', 'F', 'F']
+  const correctWord = ['O', 'C', 'E', 'A', 'N']
   const focusRef = useRef(null);
 
   const [winner, setWinner] = useState(false)
