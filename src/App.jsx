@@ -269,7 +269,7 @@ function App() {
       <GuessBox value={valueArray[5][4]} status={statusArray[5][4]} />
       </div>
     </div>
-    {winner && <h2>You Won!</h2>}
+    {winner && <h2>AGAIN!?!</h2>}
     {letterError && <h2>Not Enough Letters</h2>}
     {wordError && <h2>Ezersky says it isn't a word.</h2>}
     {rowPosition == 6 && <h2>Better luck tomorrow. Luckily there's no streak to break?</h2>}
