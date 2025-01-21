@@ -5,7 +5,7 @@ import './App.css'
 import {Words} from './words.json'
 function App() {
 
-  const correctWord = ['A', 'G', 'A', 'I','N']
+  const correctWord = ['C', 'H', 'A', 'S','M']
   const focusRef = useRef(null);
 
   const [winner, setWinner] = useState(false)
@@ -269,7 +269,7 @@ function App() {
       <GuessBox value={valueArray[5][4]} status={statusArray[5][4]} />
       </div>
     </div>
-    {winner && <h2>AGAIN!?!</h2>}
+    {winner && <h2>You Win!</h2>}
     {letterError && <h2>Not Enough Letters</h2>}
     {wordError && <h2>Ezersky says it isn't a word.</h2>}
     {rowPosition == 6 && <h2>Better luck tomorrow. Luckily there's no streak to break?</h2>}
