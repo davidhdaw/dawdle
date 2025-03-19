@@ -3,9 +3,29 @@ import GuessBox from './Components/GuessBox/GuessBox'
 import Key from './Components/GuessBox/Key'
 import './App.css'
 import {Words} from './words.json'
+import {Words as DailyWords} from './words365.json'
 function App() {
+  const getWordForDate = (dateString) => {
+    // Find the word pair that matches the given date
+    const wordPair = DailyWords.find(pair => pair[1] === dateString);
+    
+    // If we found a matching word, return it uppercase and split into array
+    // Otherwise return a default word
+    if (wordPair) {
+      return wordPair[0].toUpperCase().split('');
+    } else {
+      console.log("No word found for date:", dateString);
+      // Use the first word as default
+      return ['B','R','O','K','E'];
+    }
+  }
 
-  const correctWord = ['P','L','A','N','E']
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date();
+  const dateString = today.toISOString().split('T')[0];
+  
+  // Initialize with the default word, will be updated in useEffect if needed
+  const [correctWord, setCorrectWord] = useState(['B','R','O','K','E']);
   const focusRef = useRef(null);
 
   const [winner, setWinner] = useState(false)
@@ -70,16 +90,37 @@ function App() {
   const [boxPosition, setBoxPosition] = useState(0);
   useEffect(() =>{
     focusRef.current.focus()
-    if(localStorage.todayWord == 'undefined') {
-      localStorage.clear()
-      localStorage.setItem('todayWord', JSON.stringify(correctWord))
-    } else if (localStorage.todayWord != "undefined") {
-      const storedString = localStorage.todayWord
-      const todayString = JSON.stringify(correctWord)
-      if(storedString != todayString) {
-        localStorage.clear()
-        localStorage.setItem('todayWord', JSON.stringify(correctWord))
-      }
+    
+    // Get today's date in YYYY-MM-DD format
+    const today = new Date();
+    const dateString = today.toISOString().split('T')[0];
+    
+    // Get the stored date from localStorage
+    const storedDate = localStorage.getItem('lastPlayedDate');
+    
+    // If the date has changed or there's no stored date
+    if (!storedDate || storedDate !== dateString) {
+      // Get the word for today's date
+      const todayWord = getWordForDate(dateString);
+      
+      // Update the word in state
+      setCorrectWord(todayWord);
+      
+      // Clear localStorage and set new values
+      localStorage.clear();
+      localStorage.setItem('lastPlayedDate', dateString);
+      localStorage.setItem('todayWord', JSON.stringify(todayWord));
+      
+      console.log("Date changed to", dateString, " new word: ", correctWord);
+    } else if (localStorage.todayWord === 'undefined') {
+      // If there's a stored date but no word, set the word
+      const todayWord = getWordForDate(dateString);
+      setCorrectWord(todayWord);
+      localStorage.setItem('todayWord', JSON.stringify(todayWord));
+    } else if (localStorage.todayWord !== "undefined") {
+      // If there's a stored word, load it
+      const storedWordArray = JSON.parse(localStorage.todayWord);
+      setCorrectWord(storedWordArray);
     }
 
     if(localStorage.winner == 'true') {
@@ -163,13 +204,19 @@ function App() {
         let updatedStatusArray = statusArray
         let updatedLetterStatusObject = letterStatusObject
         let correctNum = 0
-        let remainingLetters = correctWord
+        // Create a proper copy of the correctWord array
+        let remainingLetters = [...correctWord]
+        
+        // Debug log to see what we're comparing
+        console.log("Guess:", valueArray[rowPosition].join(''), "Correct:", correctWord.join(''))
+        
         valueArray[rowPosition].forEach((letter, i) => {
           if(letter == correctWord[i]) {
             updatedStatusArray[rowPosition][i] = 'correct'
             updatedLetterStatusObject[letter] = 'correct'
             delete remainingLetters[i];
             correctNum++
+            console.log("Match at position", i, letter)
           }})
         valueArray[rowPosition].forEach((letter, i) => {
           if(remainingLetters.includes(letter)) {
@@ -177,7 +224,8 @@ function App() {
             {
               updatedStatusArray[rowPosition][i] = 'wrong-position'
               let letterIndex = remainingLetters.indexOf(letter)
-              delete remainingLetters[letterIndex]
+              // Mark as used by removing from remaining letters
+              remainingLetters.splice(letterIndex, 1);
             }
             if(updatedLetterStatusObject[letter] != "correct")
             {
@@ -195,8 +243,10 @@ function App() {
 
         setStatusArray([...updatedStatusArray])
         setLetterStatusObject({...updatedLetterStatusObject})
-        localStorage.setItem('statusArray', JSON.stringify(statusArray));
-        localStorage.setItem('letterStatusObject', JSON.stringify(letterStatusObject));
+        
+        // Use the updated arrays for localStorage
+        localStorage.setItem('statusArray', JSON.stringify(updatedStatusArray));
+        localStorage.setItem('letterStatusObject', JSON.stringify(updatedLetterStatusObject));
         localStorage.setItem('valueArray', JSON.stringify(valueArray));
         focusRef.current.focus();
 
@@ -221,10 +271,18 @@ function App() {
 
 
 
+  // Format the date for display
+  const formatDate = () => {
+    const today = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    return today.toLocaleDateString('en-US', options);
+  }
+  
   return (
     <div className='full-area' onKeyDown={keyboardCheck} tabIndex="-1" ref={focusRef}>
       <h1>Dawdle</h1>
-      <h3>(But also, hi Sugie)</h3>
+      <h3>(But also, hi Sugie and Nikki)</h3>
+      <h3>{formatDate()}</h3>
     <div className='gameArea'>
       <div className='row'>
       <GuessBox value={valueArray[0][0]} status={statusArray[0][0]}  />
