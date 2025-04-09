@@ -22,6 +22,7 @@ function App() {
 
   // Get today's date in YYYY-MM-DD format
   const today = new Date();
+  console.log(today)
   const dateString = today.toISOString().split('T')[0];
   
   // Initialize with the default word, will be updated in useEffect if needed
